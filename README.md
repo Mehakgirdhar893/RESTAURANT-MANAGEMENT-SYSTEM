@@ -26,13 +26,14 @@ A **console-based C application** for managing restaurant operations, including 
 -Place food orders
 
 🛠 Technologies Used
-*Language: C
+
+#Language: C
 *Concepts:
-*Structures
-*File Handling
-*Functions
-*Conditional Statements
-*Loops
+-Structures
+-File Handling
+-Functions
+-Conditional Statements
+-Loops
 
 ## Usage
 
