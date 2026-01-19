@@ -28,11 +28,17 @@ A **console-based C application** for managing restaurant operations, including 
 🛠 Technologies Used
 
 #Language: C
+
 *Concepts:
+
 -Structures
+
 -File Handling
+
 -Functions
+
 -Conditional Statements
+
 -Loops
 
 ## Usage
