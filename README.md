@@ -7,13 +7,21 @@ A **console-based C application** for managing restaurant operations, including 
 *Admin
 
 **Admin registration and login
+
 *Login attempt limit with delay
+
 *Add new products
+
 *View all products
+
 **Customer
+
 *New customer registration
+
 *Existing customer login
+
 *View available products
+
 *Place food orders
 
 🛠 Technologies Used
