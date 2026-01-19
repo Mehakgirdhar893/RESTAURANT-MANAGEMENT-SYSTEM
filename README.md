@@ -4,25 +4,26 @@
 A **console-based C application** for managing restaurant operations, including **admin management, product registration, customer registration, and order placement**. Data is stored persistently in binary files.
 
 ✨ Features
-*Admin
 
-**Admin registration and login
+#Admin
 
-*Login attempt limit with delay
+-Admin registration and login
 
-*Add new products
+-Login attempt limit with delay
 
-*View all products
+-Add new products
 
-**Customer
+-View all products
 
-*New customer registration
+#Customer
 
-*Existing customer login
+-New customer registration
 
-*View available products
+-Existing customer login
 
-*Place food orders
+-View available products
+
+-Place food orders
 
 🛠 Technologies Used
 *Language: C
