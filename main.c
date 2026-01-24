@@ -1,380 +1,334 @@
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
-#include <time.h>
-#include <unistd.h> // for sleep()
-// restaurant management system
-struct panel
+
+/* ================= STRUCTURES ================= */
+
+struct Admin
 {
-    char uid[10];
-    char pwd[10];
+    char id[20];
+    char pass[20];
 };
 
 struct Menu
 {
-    char pname[20];
+    int id;
+    char name[30];
     int price;
-    char category[20];
-    int quantity;
 };
 
-struct record
+struct Customer
 {
-    char name[20];
-    int phone;
-    char address[30];
+    int cid;
+    char name[30];
+    char phone[15];
 };
 
-// ADMIN REGISTER
-
-void registerAdmin()
+struct Order
 {
-    struct panel person;
-    FILE *ptr;
-    ptr = fopen("restaurant.txt", "w");
+    int cid;
+    int food_id;
+    int qty;
+};
 
-    fflush(stdin);
-    printf("Enter the uid: ");
-    gets(person.uid);
-    fflush(stdin);
-    printf("Enter the password: ");
-    gets(person.pwd);
+/* ================= ADMIN FUNCTIONS ================= */
 
-    fwrite(&person, sizeof(person), 1, ptr);
-    fclose(ptr);
-
-    printf("\nHey %s, now you are the admin!", person.uid);
-}
-
-
-// CHECK IF CUSTOMER EXISTS
-
-int check(int pno)
+/*void registerAdmin()
 {
-    struct record customer;
-    FILE *ptr;
-    int found = 0;
+    struct Admin a;
+    FILE *fp = fopen("admin.txt", "wb");
 
-    ptr = fopen("rest.txt", "r");
-    if (ptr == NULL)
-        return 0;
-
-    while (fread(&customer, sizeof(customer), 1, ptr))
+    if (fp == NULL)
     {
-        if (customer.phone == pno)
-        {
-            found = 1;
-            break;
-        }
-    }
-    fclose(ptr);
-
-    return found;
-}
-
-
-// REGISTER NEW CUSTOMER
-
-void createNewCustomer()
-{
-    struct record customer;
-    int k;
-    FILE *ptr;
-    ptr = fopen("rest.txt", "a");
-
-    fflush(stdin);
-    printf("Enter your name: ");
-    gets(customer.name);
-    fflush(stdin);
-    printf("Enter the phone: ");
-    scanf("%d", &customer.phone);
-    fflush(stdin);
-    printf("Enter the address: ");
-    gets(customer.address);
-
-    k = check(customer.phone);
-
-    if (k == 1)
-    {
-        printf("\nAlready exists, try with a new number!");
-    }
-    else
-    {
-        fwrite(&customer, sizeof(customer), 1, ptr);
-        printf("\nHey %s, you are registered successfully!", customer.name);
-    }
-
-    fclose(ptr);
-}
-
-
-// OLD CUSTOMER LOGIN
-
-void oldCustomer()
-{
-    int pno, k;
-    printf("Enter the phone: ");
-    scanf("%d", &pno);
-    k = check(pno);
-
-    if (k == 0)
-    {
-        printf("\nNot registered. Please register first........");
-        createNewCustomer();
-    }
-    else
-    {
-        printf("\nWelcome back, valued customer!");
-    }
-}
-
-
-// ADMIN VERIFICATION WITH 3 ATTEMPTS
-
-int verifiedAdmin()
-{
-    struct panel customer;
-    char x[10], y[10];
-    int k1, k2;
-    int attempts = 0;
-
-    while (attempts < 3)
-    {
-        FILE *ptr = fopen("restaurant.txt", "r");
-        if (ptr == NULL)
-        {
-            printf("\nNo admin registered yet. Register first.");
-            return 0;
-        }
-
-        fread(&customer, sizeof(customer), 1, ptr);
-        fclose(ptr);
-
-        fflush(stdin);
-        printf("\nEnter user id: ");
-        gets(x);
-        fflush(stdin);
-        printf("Enter user password: ");
-        gets(y);
-
-        k1 = strcmp(customer.uid, x);
-        k2 = strcmp(customer.pwd, y);
-
-        if (k1 == 0 && k2 == 0)
-        {
-            printf(" Verified successfully!\n");
-            return 1;
-        }
-        else
-        {
-            printf("Wrong credentials. Try again.\n");
-            attempts++;
-        }
-
-        if (attempts == 3)
-        {
-            printf(" You have reached your limit. Try again after 30 seconds.\n");
-            int sec;
-            for (sec = 30; sec >= 1; sec--)
-            {
-                printf("\rPlease wait %d seconds...", sec);
-                fflush(stdout);
-                sleep(1);
-            }
-            printf("\nNow you can try again!");
-            attempts = 0; // reset attempts
-        }
-    }
-    return 0;
-}
-
-
-// REGISTER PRODUCTS
-
-void registerProduct()
-{
-    struct Menu product;
-    FILE *ptr;
-    int i = 1;
-
-    ptr = fopen("product.txt", "a");
-
-    while (i)
-    {
-        fflush(stdin);
-        printf("\nEnter the product name: ");
-        gets(product.pname);
-
-        printf("Enter the product price: ");
-        scanf("%d", &product.price);
-
-        fflush(stdin);
-        printf("Enter the product category: ");
-        gets(product.category);
-
-        printf("Enter the quantity available: ");
-        scanf("%d", &product.quantity);
-
-        fwrite(&product, sizeof(product), 1, ptr);
-        printf(" %s registered successfully!\n", product.pname);
-
-        printf("\nPress 1 for more product, else 0: ");
-        scanf("%d", &i);
-    }
-    fclose(ptr);
-}
-
-
-// DISPLAY PRODUCTS
-
-void displayProducts()
-{
-    struct Menu product;
-    FILE *ptr;
-    ptr = fopen("product.txt", "r");
-
-    if (ptr == NULL)
-    {
-        printf("\nNo products available.");
+        printf("File error!\n");
         return;
     }
 
-    printf("\n--- Product List ---\n");
-    printf("\nName \tPrice \tCategory \tQty \tTotal \n");
-    printf("\n-----------------------------------------------\n");
+    printf("\nCreate Admin ID: ");
+    scanf("%s", a.id);
 
-    while (fread(&product, sizeof(product), 1, ptr))
+    printf("Create Password: ");
+    scanf("%s", a.pass);
+
+    fwrite(&a, sizeof(a), 1, fp);
+    fclose(fp);
+
+    printf("\nAdmin registered successfully!\n");
+}*/
+
+int adminLogin()
+{
+    struct Admin a, temp;
+    FILE *fp = fopen("admin.txt", "rb");
+
+    if (fp == NULL)
     {
-        int total = product.price * product.quantity;
-        printf("%-15s %-8d -15%s %-8d %-8d\n", product.pname, product.price, product.category, product.quantity, total);
+        printf("\nNo admin found. Please register first.\n");
+        return 0;
     }
 
-    fclose(ptr);
+    printf("\nAdmin ID: ");
+    scanf("%s", temp.id);
+
+    printf("Password: ");
+    scanf("%s", temp.pass);
+
+    fread(&a, sizeof(a), 1, fp);
+    fclose(fp);
+
+    if (strcmp(a.id, temp.id) == 0 && strcmp(a.pass, temp.pass) == 0)
+    {
+        printf("\nLogin successful!\n");
+        return 1;
+    }
+
+    printf("\nInvalid ID or Password!\n");
+    return 0;
 }
 
+/* ================= MENU FUNCTIONS ================= */
+
+void addFood()
+{
+    struct Menu m;
+    FILE *fp = fopen("menu.txt", "ab");
+
+    printf("\nFood ID: ");
+    scanf("%d", &m.id);
+
+    printf("Food Name: ");
+    scanf("%s", m.name);
+
+    printf("Price: ");
+    scanf("%d", &m.price);
+
+    fwrite(&m, sizeof(m), 1, fp);
+    fclose(fp);
+
+    printf("\nFood item added successfully!\n");
+}
+
+void viewMenu()
+{
+    struct Menu m;
+    FILE *fp = fopen("menu.txt", "rb");
+
+    if (fp == NULL)
+    {
+        printf("\nMenu is empty.\n");
+        return;
+    }
+
+    printf("\n------ MENU ------\n");
+    printf("ID\tName\t\tPrice\n");
+
+    while (fread(&m, sizeof(m), 1, fp))
+    {
+        printf("%d\t%-10s\t%d\n", m.id, m.name, m.price);
+    }
+
+    fclose(fp);
+}
+
+/* ================= CUSTOMER FUNCTIONS ================= */
+
+void addCustomer()
+{
+    struct Customer c;
+    FILE *fp = fopen("customer.txt", "ab");
+
+    printf("\nCustomer ID: ");
+    scanf("%d", &c.cid);
+
+    printf("Customer Name: ");
+    scanf("%s", c.name);
+
+    printf("Phone Number: ");
+    scanf("%s", c.phone);
+
+    fwrite(&c, sizeof(c), 1, fp);
+    fclose(fp);
+
+    printf("\nCustomer added successfully!\n");
+}
+
+int isCustomerExists(int cid)
+{
+    struct Customer c;
+    FILE *fp = fopen("customer.txt", "rb");
+    if (fp == NULL) return 0;
+
+    while (fread(&c, sizeof(c), 1, fp))
+    {
+        if (c.cid == cid)
+        {
+            fclose(fp);
+            return 1;  // Customer exists
+        }
+    }
+    fclose(fp);
+    return 0; // Customer not found
+}
+
+/* ================= ORDER & BILL ================= */
+
+int getFoodPrice(int food_id)
+{
+    struct Menu m;
+    FILE *fp = fopen("menu.txt", "rb");
+
+    if (fp == NULL)
+        return 0;
+
+    while (fread(&m, sizeof(m), 1, fp))
+    {
+        if (m.id == food_id)
+        {
+            fclose(fp);
+            return m.price;
+        }
+    }
+
+    fclose(fp);
+    return 0;
+}
 
 void placeOrder()
 {
-    struct Menu product;
-    FILE *ptr;
-    char searchName[20];
-    int quantity, found = 0, total = 0;
+    struct Order o;
+    int total = 0, price;
+    int customerType, cid;
 
-    ptr = fopen("product.txt", "r");
-    if (ptr == NULL)
+    printf("\nAre you a new or existing customer?");
+    printf("\n1. New Customer");
+    printf("\n2. Existing Customer");
+    printf("\nChoice: ");
+    scanf("%d", &customerType);
+
+    if (customerType == 1)
     {
-        printf("\nNo products available to order!");
+        addCustomer();  // Adds new customer
+        printf("Enter your Customer ID to continue order: ");
+        scanf("%d", &cid);
+        if (!isCustomerExists(cid))
+        {
+            printf("Customer ID not found. Order cancelled.\n");
+            return;
+        }
+        o.cid = cid;
+    }
+    else if (customerType == 2)
+    {
+        printf("Enter your Customer ID: ");
+        scanf("%d", &cid);
+        if (!isCustomerExists(cid))
+        {
+            printf("Customer not found! Please register first.\n");
+            return;
+        }
+        o.cid = cid;
+    }
+    else
+    {
+        printf("Invalid choice!\n");
         return;
     }
 
-    printf("\nEnter product name to order: ");
-    fflush(stdin);
-    gets(searchName);
+    FILE *fp = fopen("order.txt", "ab");
 
-    while (fread(&product, sizeof(product), 1, ptr))
+    viewMenu();
+
+    while (1)
     {
-        if (strcmp(product.pname, searchName) == 0)
-        {
-            found = 1;
-            printf("\nProduct found: %s", product.pname );
-            printf("\nCategory: %s", product.category);
-            printf("\nPrice per unit: %d", product.price);
-            printf("\nAvailable quantity: %d", product.quantity);
-
-            printf("\nEnter quantity to order: ");
-            scanf("%d", &quantity);
-
-            if (quantity > product.quantity)
-            {
-                printf("Not enough stock! Only %d left.\n", product.quantity);
-            }
-            else
-            {
-                total = quantity * product.price;
-                printf(" \n Order placed successfully!\n");
-                printf("You ordered %d x %s = Total: %d\n", quantity, product.pname, total);
-            }
+        printf("\nEnter Food ID (0 to finish): ");
+        scanf("%d", &o.food_id);
+        if (o.food_id == 0)
             break;
-        }
-    }
-    fclose(ptr);
 
-    if (!found)
-        printf("\n Product not found.");
+        printf("Quantity: ");
+        scanf("%d", &o.qty);
+
+        price = getFoodPrice(o.food_id);
+        if (price == 0)
+        {
+            printf("Invalid food ID!\n");
+            continue;
+        }
+
+        total += price * o.qty;
+        fwrite(&o, sizeof(o), 1, fp);
+    }
+
+    fclose(fp);
+
+    printf("\n================ BILL =================");
+    printf("\nTotal Amount: %d", total);
+    printf("\nThank you! Visit again.\n");
 }
 
-
-
-// MAIN
+/* ================= MAIN FUNCTION ================= */
 
 int main()
-
 {
-    int type, count = 0, choice;
-    int x, i = 1;
+    int choice, adminChoice;
 
-    while (i)
+    while (1)
     {
-    again:
-        printf("\nPress 1: for Admin");
-        printf("\nPress 2: for Customer");
-        printf("\nEnter type: ");
-        scanf("%d", &type);
+        printf("\n\n===== RESTAURANT MANAGEMENT SYSTEM =====");
+        //printf("\n0. Admin Register");
+        printf("\n1. Admin Login");
+        printf("\n2. Add Customer");
+        printf("\n3. View Menu");
+        printf("\n4. Place Order");
+        printf("\n5. Exit");
 
-        if (type == 1)
+        printf("\nEnter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice)
         {
-            x = verifiedAdmin();
-            if (x == 1)
+        case 0:
+            //registerAdmin();
+            break;
+
+        case 1:
+            if (adminLogin())
             {
-                printf("\n--- Welcome Admin ---");
-                printf("1. Register Product\n");
-                printf("2. Display Products\n");
-                printf("Enter your choice: ");
-                scanf("%d", &choice);
-
-                if (choice == 1)
-                    registerProduct();
-                else if (choice == 2)
+                do
                 {
-                	displayProducts();
-                	if(x==1)
-					{
-						printf("\n_ _ _Welcome Admin_ _ _");
-					}
-				}    
-                else
-                    printf("Invalid choice!\n");
+                    printf("\n--- ADMIN PANEL ---");
+                    printf("\n1. Add Food Item");
+                    printf("\n2. View Menu");
+                    printf("\n0. Logout");
+                    printf("\nChoice: ");
+                    scanf("%d", &adminChoice);
+
+                    if (adminChoice == 1)
+                        addFood();
+                    else if (adminChoice == 2)
+                        viewMenu();
+
+                } while (adminChoice != 0);
             }
-        }
-        else if (type == 2)
-        {
-            printf("\n1. New Customer");
-            printf("\n2. Old Customer");
-            printf("\nEnter your choice: ");
-            scanf("%d", &choice);
+            break;
 
-            if (choice == 1)
-                createNewCustomer();
-            else if (choice == 2)
-               {
-				oldCustomer();
-				displayProducts();
-				placeOrder();
-			   }
-            else
-                printf("Wrong choice!\n");
-        }
-        else
-        {
-            printf("\nTry again...");
-            goto again;
-        }
+        case 2:
+            addCustomer();
+            break;
 
-        printf("\nPress 1 for more, else 0: ");
-        scanf("%d", &i);
-        while (getchar() != '\n');
+        case 3:
+            viewMenu();
+            break;
+
+        case 4:
+            placeOrder();
+            break;
+
+        case 5:
+            printf("\nExiting system...\n");
+            return 0;
+
+        default:
+            printf("\nInvalid choice!\n");
+        }
     }
-
-    printf("\nExiting system... Goodbye see u again :) !");
-    return 0;
 }
